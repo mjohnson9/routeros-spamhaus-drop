@@ -1,2 +1,3 @@
 # routeros-spamhaus-drop
-Script to update RouterOS routers with the Spamhaus (E)DROP list
+Usage: `./update-router-drop-list.sh <router address>'
+For example: `./update-router-drop-list.sh server@router1`

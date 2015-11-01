@@ -2,6 +2,13 @@
 
 set -e
 
+die() {
+	echo >&2 "$@"
+	exit 1
+}
+
+[ "$#" -eq 1 ] || die "Usage: $0 <SSH address of router>"
+
 ROUTER="$1"
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

@@ -40,4 +40,9 @@ diff -wU0 router.txt spamhaus.txt | while read dl; do
 	fi
 done
 
-ssh "${ROUTER}" < script.txt
+if [ -e script.txt ]; then
+	ssh "${ROUTER}" < script.txt
+	echo "Made $(wc -l script.txt) changes."
+else
+	echo "Made 0 changes."
+fi

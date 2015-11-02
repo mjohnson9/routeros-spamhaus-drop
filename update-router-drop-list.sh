@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+set -x
 
 die() {
 	echo >&2 "$@"
@@ -23,9 +24,12 @@ trap "rm -rf ${TMPDIR}" EXIT
 cd "${TMPDIR}"
 
 # Download the sanitized drop list from Spamhaus
-{ "${SCRIPT_DIR}/get-spamhaus-list.sh" drop; "${SCRIPT_DIR}/get-spamhaus-list.sh" edrop; } | sort -u > spamhaus.txt
+{ "${SCRIPT_DIR}/get-spamhaus-list.sh" drop; "${SCRIPT_DIR}/get-spamhaus-list.sh" edrop; } | sort -u > spamhaus.txt &
 # Download the list from the router
-"${SCRIPT_DIR}/get-router-address-list.sh" "${ROUTER}" | sort -u > router.txt
+"${SCRIPT_DIR}/get-router-address-list.sh" "${ROUTER}" | sort -u > router.txt &
+
+# Wait for the downloads to finish
+wait
 
 # Save the current time for the address list
 current_date="$(date --utc --rfc-3339=seconds)"

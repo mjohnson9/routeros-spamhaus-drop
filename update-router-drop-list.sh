@@ -13,7 +13,7 @@ die() {
 ROUTER="$1"
 
 # This script's directory
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( pwd )"
 
 # Temporary directory for storing our working files
 TMPDIR="$(mktemp -d)"

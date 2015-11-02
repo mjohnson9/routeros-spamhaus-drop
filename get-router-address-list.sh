@@ -22,4 +22,4 @@ scp "$1:/spamhaus-drop.txt" "${TMPFILE}"
 ssh "$1" "/file remove spamhaus-drop.txt" &
 
 # Extract the IP addresses from the print list and print it on stdout
-cat "${TMPFILE}" | grep -Fv ';;;' | grep -Fv '#' | grep -oE '((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])(\/(3[0-2]|[1-2][0-9]|[0-9]))?'
+cat "${TMPFILE}" | grep -Fv ';;;' | grep -Fv '#' | grep -oE '((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])(\/(3[0-2]|[1-2][0-9]|[0-9]))?' | tr -d "\r"

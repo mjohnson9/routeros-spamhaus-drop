@@ -31,7 +31,7 @@ cd "${TMPDIR}"
 wait
 
 # Save the current time for the address list
-current_date="$(date --utc --rfc-3339=seconds)"
+current_date="$(date)"
 
 # Find address that are in router.txt but not spamhaus.txt
 comm -23 router.txt spamhaus.txt | while read dl; do

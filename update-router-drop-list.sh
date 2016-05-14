@@ -23,15 +23,19 @@ trap "rm -rf ${TMPDIR}" EXIT
 cd "${TMPDIR}"
 
 # Download the sanitized drop list from Spamhaus
+echo "Downloading Spamhaus DROP list..."
 { "${SCRIPT_DIR}/get-spamhaus-list.sh" drop; "${SCRIPT_DIR}/get-spamhaus-list.sh" edrop; } | sort -u > spamhaus.txt &
 # Download the list from the router
+echo "Retrieving drop list from router..."
 "${SCRIPT_DIR}/get-router-address-list.sh" "${ROUTER}" | sort -u > router.txt &
 
 # Wait for the downloads to finish
 wait
 
+echo "Done!"
+
 # Save the current time for the address list
-current_date="$(date)"
+current_date="$(date --utc --iso-8601=seconds)"
 
 # Find address that are in router.txt but not spamhaus.txt
 comm -23 router.txt spamhaus.txt | while read dl; do
@@ -44,9 +48,10 @@ comm -13 router.txt spamhaus.txt | while read dl; do
 done
 
 if [ -e script.txt ]; then
+	echo "Updating..."
 	# Connect to the router to apply changes
 	ssh "${ROUTER}" < script.txt
-	echo "Made $(wc -l script.txt) changes."
+	echo "Made $(wc -l script.txt | cut -d' ' -f1) changes."
 else
-	echo "Made 0 changes."
+	echo "Already up-to-date."
 fi

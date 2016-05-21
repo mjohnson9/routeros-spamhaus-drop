@@ -45,6 +45,9 @@ done
 # Find addresses that are in spamhaus.txt but not router.txt
 comm -13 router.txt spamhaus.txt | while read dl; do
 	echo "/ip firewall address-list add list=spamhaus-drop comment=\"${current_date}\" address=${dl}" >> script.txt
+	cidr_regex="$(echo -n "${dl}" | python2 "${SCRIPT_DIR}/cidr-to-regex.py")"
+	echo "cidr_regex: ${cidr_regex}"
+	echo "/ip firewall connection remove [/ip firewall connection find where dst-address~\"${cidr_regex}\"]" >> script.txt
 done
 
 if [ -e script.txt ]; then
